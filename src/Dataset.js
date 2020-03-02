@@ -15,12 +15,24 @@ class Dataset extends Component {
   componentDidMount = () =>
     fetch(`/api/${this.props.match.params.dataset}`)
       .then(res => res.json())
-      .then(data => {this.setState({count:data.total})})
+      .then(data => {this.setState({count:data.total, cols:{...data}})})
 
   render() {
     const state = this.state;
+    const columns = this.state.cols;
+
     let params = this.props.match.params || null;
 
+    const info = columns ? Object.keys(columns).map(col =>{
+        return(
+          <div>
+            <p>{col}</p>
+            <p>{columns[col]}</p>
+          </div>
+        )
+      }) : null
+
+    console.log(columns)
     return (
       <div className="App">
         <div className="App-header">
@@ -32,6 +44,7 @@ class Dataset extends Component {
         </p>
         <p>Current dataset is {params.dataset}</p>
         <p>Dataset count {state.count}</p>
+        {info}
       </div>
     );
   }

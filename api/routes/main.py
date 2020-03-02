@@ -6,13 +6,13 @@ import basic_client
 
 client = basic_client.client()
 
-extension = Blueprint('extension', __name__)
+main = Blueprint('main', __name__)
 
-@extension.route("/api")
+@main.route("/api")
 def treasure_list():
     return "list of objects"
 
-@extension.route('/api/<dataset>', methods=["GET"])
+@main.route('/api/<dataset>', methods=["GET"])
 def get_dataset_info(dataset):
   try:
     info = client.get_metadata(dataset)
@@ -26,12 +26,13 @@ def get_dataset_info(dataset):
   try: 
     count = int(count[0]["total"])
   except KeyError:
-    count = 25
+    # dataset may not have api automation yet
+    count = 0
   response["total"] = count
   return jsonify(response)
 
 
-# @extension.route('/api/<dataset>/<column>', methods=["GET"])
+# @main.route('/api/<dataset>/<column>', methods=["GET"])
 # def get_dataset_subset(dataset, column):
 #   where = {column: "POOYAN"}    
 #   count = client.get(dataset, **where)
