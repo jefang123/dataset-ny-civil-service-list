@@ -1,38 +1,25 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {Info} from './Info.js';
 
-// export const Dataset = () =>
-//   <Router>
-//     <Switch>
-//       <Route path="/" exact={true} component={Home} />
-//       {/* <Route path="/:dataset" component={Dataset} /> */}
-//     </Switch>
-//   </Router>
 
 class Dataset extends Component {
   state = {};
   componentDidMount = () =>
     fetch(`/api/${this.props.match.params.dataset}`)
       .then(res => res.json())
-      .then(data => {this.setState({count:data.total, cols:{...data}})})
+      .then(data => {
+        let { total, columns } = data
+        this.setState({count:total, columns})
+      })
 
   render() {
     const state = this.state;
-    const columns = this.state.cols;
-
+    const columns = this.state.columns;
     let params = this.props.match.params || null;
-
-    const info = columns ? Object.keys(columns).map(col =>{
-        return(
-          <div>
-            <p>{col}</p>
-            <p>{columns[col]}</p>
-          </div>
-        )
-      }) : null
-
-    console.log(columns)
+    let info = <Info columns={columns}/>;
+    console.log(this.state)
     return (
       <div className="App">
         <div className="App-header">
