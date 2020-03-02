@@ -3,7 +3,14 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  state = {};
+  componentDidMount = () =>
+    fetch('/time')
+      .then(res => res.json())
+      .then(data => {this.setState({time:data.time})})
+
   render() {
+    const state = this.state;
     return (
       <div className="App">
         <div className="App-header">
@@ -13,6 +20,7 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+        <p>The current time is {state.time}</p>
       </div>
     );
   }
