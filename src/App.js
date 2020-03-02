@@ -5,7 +5,7 @@ import './App.css';
 class App extends Component {
   state = {};
   componentDidMount = () =>
-    fetch('/time')
+    fetch('/api/time')
       .then(res => res.json())
       .then(data => {this.setState({time:data.time})})
 
