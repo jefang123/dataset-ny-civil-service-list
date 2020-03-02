@@ -1,12 +1,15 @@
 import time
+import requests
 from flask import Flask, jsonify
-import basic_client
+from errors.errors import errors
+from routes.main import extension
 
 app = Flask(__name__)
 
-client, dataset = basic_client.client()
+app.register_blueprint(errors)
+app.register_blueprint(extension)
 
-@app.route('/')
+@app.route('/', methods=["GET"])
 def hello():
   return("Server is running")
 # def count():
@@ -18,7 +21,6 @@ def hello():
 #     count = 25
 #   return { 'total': count }
 
-
-@app.route('/api/time')
+@app.route('/api/time', methods=["GET"])
 def get_current_time():
     return jsonify({'time': time.time()})

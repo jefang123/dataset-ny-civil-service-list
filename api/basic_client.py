@@ -2,9 +2,8 @@
 from sodapy import Socrata
 
 def client():
-  client = Socrata("data.cityofnewyork.us", None)
-  dataset = "vx8i-nprf"
-  return client, dataset
+  return Socrata("data.cityofnewyork.us", None)
+  
 
 # metadata = client.get_metadata("vx8i-nprf")
 
