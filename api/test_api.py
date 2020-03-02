@@ -1,22 +1,22 @@
 import unittest
-import api
+import app
 import json
 
 class TestApi(unittest.TestCase):
 
     def setUp(self):
-      self.api = api.app.test_client()
-      self.api.testing = True
+      self.app = app.app.test_client()
+      self.app.testing = True
 
     def test_endpoint(self):
-      response = self.api.get('/')
+      response = self.app.get('/')
       data = response.get_data()
       self.assertEqual(response.status_code, 200)
       self.assertEqual(b"Server is running", data)
       self.assertEqual("Server is running", data.decode("utf-8"))
     
-    def test_error(self):
-      response = self.api.get('/asdf')
+    def test_404(self):
+      response = self.app.get('/asdf')
       data = json.loads(response.get_data())
       self.assertEqual(response.status_code, 404)
       self.assertEqual(data["error"], "not found")

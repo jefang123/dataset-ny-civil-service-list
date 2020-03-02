@@ -13,9 +13,9 @@ import './App.css';
 class Dataset extends Component {
   state = {};
   componentDidMount = () =>
-    fetch('/api/time')
+    fetch(`/api/${this.props.match.params.dataset}`)
       .then(res => res.json())
-      .then(data => {this.setState({time:data.time})})
+      .then(data => {this.setState({count:data.total})})
 
   render() {
     const state = this.state;
@@ -31,6 +31,7 @@ class Dataset extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
         <p>Current dataset is {params.dataset}</p>
+        <p>Dataset count {state.count}</p>
       </div>
     );
   }
