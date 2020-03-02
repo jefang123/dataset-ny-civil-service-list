@@ -3,6 +3,19 @@ from requests import exceptions
 
 client = Socrata("data.cityofnewyork.us", None)
 
+def setup_with_appToken(appToken):
+  client = Socrata("data.cityofnewyork.us", appToken)
+
+def get_all_datasets(q="", offset=0):
+  data = {}
+  datasets = client.datasets(limit=25, q=q, offset=offset)
+  for dataset in datasets:
+    dataset_id = dataset["resource"]["id"] 
+    dataset_name = dataset["resource"]["name"]
+    print(dataset_id, dataset_name)
+    data[dataset_id] = dataset_name
+  return data, 200
+
 def get_dataset_info(dataset):
   try:
     info = client.get_metadata(dataset)
@@ -15,6 +28,7 @@ def get_dataset_info(dataset):
       return ("Unable to query database, try again later.", 500)
   columns = info["columns"]
   response = {}
+  response["dataset_name"] = info["name"]
   cols_metadata = {}
   for column in columns:
     meta = {}

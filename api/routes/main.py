@@ -4,9 +4,10 @@ import basic_client
 
 main = Blueprint('main', __name__)
 
-@main.route("/api")
+@main.route("/api", methods=["GET"])
 def treasure_list():
-    return "list of objects"
+  res, status_code = basic_client.get_all_datasets()
+  return jsonify(res)
 
 @main.route('/api/<dataset>', methods=["GET"])
 

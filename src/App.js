@@ -7,7 +7,7 @@ export const App = () =>
   <Router>
     <Switch>
       <Route path="/" exact={true} component={Home} />
-      <Route path="/:dataset" component={Dataset} />
+      <Route path="/ny/:dataset" component={Dataset} />
     </Switch>
   </Router>
 

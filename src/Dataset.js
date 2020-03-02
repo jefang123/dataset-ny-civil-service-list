@@ -10,14 +10,12 @@ class Dataset extends Component {
     fetch(`/api/${this.props.match.params.dataset}`)
       .then(res => res.json())
       .then(data => {
-        let { total, columns } = data
-        this.setState({count:total, columns})
+        let { dataset_name, total, columns } = data
+        this.setState({dataset_name, count:total, columns})
       })
 
   render() {
-    const state = this.state;
-    const columns = this.state.columns;
-    let params = this.props.match.params || null;
+    const { dataset_name, count, columns } = this.state;
     let info = <Info columns={columns}/>;
     console.log(this.state)
     return (
@@ -29,8 +27,8 @@ class Dataset extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-        <p>Current dataset is {params.dataset}</p>
-        <p>Dataset count {state.count}</p>
+        <p>Current dataset is {dataset_name}</p>
+        <p>Dataset count {count}</p>
         {info}
       </div>
     );
