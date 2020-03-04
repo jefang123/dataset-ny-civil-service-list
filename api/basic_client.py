@@ -6,9 +6,9 @@ client = Socrata("data.cityofnewyork.us", None)
 def setup_with_appToken(appToken):
   client = Socrata("data.cityofnewyork.us", appToken)
 
-def get_all_datasets(q="", offset=0):
+def get_all_datasets(q="", limit=25, offset=0):
   data = {}
-  datasets = client.datasets(limit=25, q=q, offset=offset)
+  datasets = client.datasets(limit=limit, q=q, offset=offset)
   for dataset in datasets:
     dataset_id = dataset["resource"]["id"] 
     dataset_name = dataset["resource"]["name"]
