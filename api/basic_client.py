@@ -83,7 +83,7 @@ def get_dataset(dataset, query_params):
   if status_code != 200:
     return (msg, status_code)
   try:
-    results = _client.get(dataset)
+    results = _client.get(dataset, limit=25)
   except exceptions.HTTPError as e:
     return handleHTTPError(e)
   response = {}
