@@ -58,7 +58,7 @@ def setup_dataset(dataset):
       _COUNT = -1
   return ("Setup dataset successfully", 200)
 
-def setup(dataset=None)
+def setup(dataset=None):
   setup_client()
   if dataset:
     return setup_dataset(dataset)
@@ -66,11 +66,11 @@ def setup(dataset=None)
 def get_all_datasets(query_params):
   l = query_params.get("limit", 25)
   q = query_params.get("q", "")
-  offset = query_params.get("offset", 0)
+  o = query_params.get("offset", 0)
   setup()
   data = {}
   domain = DOMAINS.get(_client.domain)
-  datasets = _client.datasets(limit=limit, q=q, offset=offset)
+  datasets = _client.datasets(limit=l, q=q, offset=o)
   for dataset in datasets:
     dataset_id = dataset["resource"]["id"] 
     dataset_name = dataset["resource"]["name"]
@@ -90,12 +90,11 @@ def get_dataset(dataset, query_params):
   for i, result in enumerate(results):
     for field, value in result.items():
       if _COLUMNS_TYPE[field] == "number":
-        value = int(value)
-      elif _COLUMNS_TYPE[field] == "calender_date":
-        value = datetime.fromisoformat(value).date()
+        result[field] = float(value)
+      elif _COLUMNS_TYPE[field] == "calendar_date":
+        result[field] = datetime.fromisoformat(value).strftime("%m/%d/%y")
     response[i] = result
-  if _COUNT > 0:
-    response["total"] = _COUNT
+  # response["total"] = _COUNT
   return response, 200
 
 def get_dataset_info(dataset):
@@ -117,6 +116,5 @@ def get_dataset_info(dataset):
     cols_metadata[column["id"]] = meta
   response["columns"] = cols_metadata
   count = _client.get(dataset, select="COUNT(*) as total")
-  if _COUNT > 0:
-    response["total"] = _COUNT
+  response["total"] = _COUNT
   return response, 200

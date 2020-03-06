@@ -4,7 +4,7 @@ import basic_client
 
 main = Blueprint('main', __name__)
 
-@main.route("/api", methods=["GET"])
+@main.route("/api/", methods=["GET"])
 def get_datasets():
   query_params = request.args
   res, status_code = basic_client.get_all_datasets(query_params)
@@ -13,7 +13,7 @@ def get_datasets():
   elif status_code >= 400:
     abort(status_code)
 
-@main.route('/api/<dataset>', methods=["GET"])
+@main.route('/api/<dataset>/', methods=["GET"])
 def get_dataset(dataset):
   query_params = request.args
   res, status_code = basic_client.get_dataset(dataset, query_params)
@@ -22,7 +22,7 @@ def get_dataset(dataset):
   elif status_code >= 400:
     abort(status_code)
 
-@main.route('/api/<dataset>/info', methods=["GET"])
+@main.route('/info/<dataset>/', methods=["GET"])
 def get_dataset_info(dataset):
   # query_params = request.args
   res, status_code = basic_client.get_dataset_info(dataset)
