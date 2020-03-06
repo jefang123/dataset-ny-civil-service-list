@@ -14,7 +14,7 @@ class Dataset extends Component {
       })
   
   onSubmit = () => 
-    fetch(`/api/${this.props.match.params.dataset}`)
+    fetch(`/api/${this.props.match.params.dataset}/info`)
     .then(res => res.json())
     .then(data => {
       let { dataset_name, total, columns } = data

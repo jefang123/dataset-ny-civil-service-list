@@ -7,22 +7,29 @@ main = Blueprint('main', __name__)
 @main.route("/api", methods=["GET"])
 def get_datasets():
   query_params = request.args
-  q = query_params.get("q", "")
-  # limit = int(query_params.get("limit", 25))
-  # offset= int(query_params.get("offset", 25))
-  res, status_code = basic_client.get_all_datasets(q=q)
+  res, status_code = basic_client.get_all_datasets(query_params)
   if status_code == 200:
     return jsonify(res)
   elif status_code >= 400:
     abort(status_code)
 
 @main.route('/api/<dataset>', methods=["GET"])
+def get_dataset(dataset):
+  query_params = request.args
+  res, status_code = basic_client.get_dataset(dataset, query_params)
+  if status_code == 200:
+    return jsonify(res)
+  elif status_code >= 400:
+    abort(status_code)
 
+@main.route('/api/<dataset>/info', methods=["GET"])
 def get_dataset_info(dataset):
+  # query_params = request.args
   res, status_code = basic_client.get_dataset_info(dataset)
-  if status_code == 404:
-    abort(404)
-  return jsonify(res)
+  if status_code == 200:
+    return jsonify(res)
+  elif status_code >= 400:
+    abort(status_code)
 
 # @main.route('/api/<dataset>/<column>', methods=["GET"])
 # def get_dataset_subset(dataset, column):

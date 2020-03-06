@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, make_response
 
 errors = Blueprint('errors', __name__)
 
-BAD_REQ = 'bad requrest'
+BAD_REQ = 'bad request'
 NOT_FOUND = 'not found'
 
 @errors.app_errorhandler(400)
