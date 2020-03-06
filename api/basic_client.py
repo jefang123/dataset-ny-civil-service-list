@@ -90,7 +90,7 @@ def get_dataset(dataset, query_params):
   for i, result in enumerate(results):
     for field, value in result.items():
       if _COLUMNS_TYPE[field] == "number":
-        result[field] = float(value)
+        result[field] = int(float(value))
       elif _COLUMNS_TYPE[field] == "calendar_date":
         result[field] = datetime.fromisoformat(value).strftime("%m/%d/%y")
     response[i] = result
@@ -111,8 +111,8 @@ def get_dataset_info(dataset):
   cols_metadata = {}
   for column in columns:
     meta = {}
-    meta["name"] = column["name"]
-    meta["description"] = column["description"]
+    meta["name"] = column.get("name", "")
+    meta["description"] = column.get("description", "")
     cols_metadata[column["id"]] = meta
   response["columns"] = cols_metadata
   count = _client.get(dataset, select="COUNT(*) as total")

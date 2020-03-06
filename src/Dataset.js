@@ -6,20 +6,20 @@ import {Info} from './Info.js';
 class Dataset extends Component {
   state = {};
   componentDidMount = () =>
-    fetch(`/api/${this.props.match.params.dataset}`)
+    fetch(`/info/${this.props.match.params.dataset}`)
       .then(res => res.json())
       .then(data => {
         let { dataset_name, total, columns } = data
         this.setState({dataset_name, count:total, columns})
       })
   
-  onSubmit = () => 
-    fetch(`/api/${this.props.match.params.dataset}/info`)
-    .then(res => res.json())
-    .then(data => {
-      let { dataset_name, total, columns } = data
-      this.setState({dataset_name, count:total, columns})
-    })
+  // onSubmit = () => 
+  //   fetch(`/api/${this.props.match.params.dataset}`)
+  //   .then(res => res.json())
+  //   .then(data => {
+  //     let { dataset_name, total, columns } = data
+  //     this.setState({dataset_name, count:total, columns})
+  //   })
 
   render() {
     const { dataset_name, count, columns } = this.state;
