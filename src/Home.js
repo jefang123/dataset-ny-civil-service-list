@@ -8,13 +8,16 @@ class Home extends Component {
   componentDidMount = () =>
     fetch('/api' + this.props.location.search)
       .then(res => res.json())
-      .then(data => {this.setState({datasets:data})})
+      .then(data => {
+        const { domain, ...datasets } = data
+        this.setState({ datasets,domain })
+      })
 
   render() {
-    const { datasets } = this.state;
+    const { datasets, domain } = this.state;
     const links = datasets ? Object.keys(datasets).map(dataset => 
       <React.Fragment key={dataset}>
-        <Link to={`/ny/${dataset}`}>{datasets[dataset]}</Link>
+        <Link to={`/${domain}/${dataset}`}>{datasets[dataset]}</Link>
         <br/>
       </React.Fragment>
     ) : null
