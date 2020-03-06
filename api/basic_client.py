@@ -4,7 +4,7 @@ from requests import exceptions
 
 _client = None
 DOMAINS = {
-  "data.cityofnewyork.us":"ny",
+  "data.cityofnewyork.us":"ny", #Add more domains in the future
 }
 _current_dataset = None
 """
@@ -58,11 +58,16 @@ def setup_dataset(dataset):
       _COUNT = -1
   return ("Setup dataset successfully", 200)
 
+def setup(dataset=None)
+  setup_client()
+  if dataset:
+    return setup_dataset(dataset)
+
 def get_all_datasets(query_params):
   l = query_params.get("limit", 25)
   q = query_params.get("q", "")
   offset = query_params.get("offset", 0)
-  setup_client()
+  setup()
   data = {}
   domain = DOMAINS.get(_client.domain)
   datasets = _client.datasets(limit=limit, q=q, offset=offset)
@@ -74,8 +79,7 @@ def get_all_datasets(query_params):
   return data, 200
 
 def get_dataset(dataset, query_params):
-  setup_client()
-  msg, status_code = setup_dataset(dataset)
+  msg, status_code = setup(dataset)
   if status_code != 200:
     return (msg, status_code)
   try:
@@ -95,8 +99,7 @@ def get_dataset(dataset, query_params):
   return response, 200
 
 def get_dataset_info(dataset):
-  setup_client()
-  msg, status_code = setup_dataset(dataset)
+  msg, status_code = setup(dataset)
   if status_code != 200:
     return (msg, status_code)
   try:
