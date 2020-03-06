@@ -1,3 +1,4 @@
+from datetime import datetime
 from sodapy import Socrata
 from requests import exceptions
 
@@ -72,7 +73,7 @@ def get_all_datasets(query_params):
     data["domain"] = domain
   return data, 200
 
-def get_dataset(dataset):
+def get_dataset(dataset, query_params):
   setup_client()
   msg, status_code = setup_dataset(dataset)
   if status_code != 200:
@@ -87,7 +88,7 @@ def get_dataset(dataset):
       if _COLUMNS_TYPE[field] == "number":
         value = int(value)
       elif _COLUMNS_TYPE[field] == "calender_date":
-        pass
+        value = datetime.fromisoformat(value).date()
     response[i] = result
   if _COUNT > 0:
     response["total"] = _COUNT
