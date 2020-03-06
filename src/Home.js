@@ -6,7 +6,7 @@ import './App.css';
 class Home extends Component {
   state = {};
   componentDidMount = () =>
-    fetch('/api')
+    fetch('/api' + this.props.location.search)
       .then(res => res.json())
       .then(data => {this.setState({datasets:data})})
 
