@@ -1,12 +1,18 @@
 import time
 import requests
 from flask import Flask, jsonify
-from flask_cors import CORS
+# from flask_cors import CORS
 from errors.errors import errors
 from routes.main import main
 
 app = Flask(__name__)
-cors = CORS(app)
+# cors = CORS(app)
+@app.after_request # blueprint can also be app~~
+def after_request(response):
+    header = response.headers
+    header['Access-Control-Allow-Origin'] = '*'
+    return response
+
 
 app.register_blueprint(errors)
 app.register_blueprint(main)
