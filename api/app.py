@@ -1,6 +1,6 @@
 import time
 import requests
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from errors.errors import errors
 from routes.main import main
@@ -20,7 +20,23 @@ app.register_blueprint(main)
 
 @app.route('/', methods=["GET"])
 def hello():
-  return("Server is running")
+  d= {}
+  d["base_url"] = request.base_url
+  d["chrset"] = request.charset
+  d["cookies"] = request.cookies
+  # d["data"] = request.data
+  # d["headers"] = request.headers
+  d["User-Agent"] = request.headers.get('User-Agent')
+  d["host"] = request.host
+  d["host_url"] = request.host_url
+  # d["is_multithread"] = request.is_multithread
+  # d["is_run_once"] = request.is_run_once
+  d["method"] = request.method
+  d["remote_addr"] = request.remote_addr
+  d["remote_user"] = request.remote_user
+  # d["query_string"] = request.query_string
+
+  return(jsonify(d))
 
 @app.route('/api/time', methods=["GET"])
 def get_current_time():
