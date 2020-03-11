@@ -79,11 +79,21 @@ def get_all_datasets(query_params):
   return data, 200
 
 def get_dataset(dataset, query_params):
+  sort_asc = query_params.get("sort_asc")
+  sort_dsc = query_params.get("sort_desc")
+  sort = ""
+
+  if sort_asc:
+    sort += ",".join(sort_asc) + " ASC"
+  if sort_dsc:
+    sort += ",".join(sort_dsc) + " DSC"
+
+
   msg, status_code = setup(dataset)
   if status_code != 200:
     return (msg, status_code)
   try:
-    results = _client.get(dataset, limit=25)
+    results = _client.get(dataset, limit=25, sort=sort)
   except exceptions.HTTPError as e:
     return handleHTTPError(e)
   response = {}
