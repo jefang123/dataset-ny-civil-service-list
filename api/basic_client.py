@@ -1,4 +1,5 @@
 from datetime import datetime
+from os import environ
 from sodapy import Socrata
 from requests import exceptions
 
@@ -19,11 +20,8 @@ _COUNT = 0
 def setup_client():
   global _client
   if not _client:
-    _client = Socrata("data.cityofnewyork.us", None)
-
-def setup_with_appToken(appToken):
-  global _client
-  _client = Socrata("data.cityofnewyork.us", appToken)
+    appToken = environ.get("SOCRATA_APPTOKEN", None)
+    _client = Socrata("data.cityofnewyork.us", appToken)
 
 def handleHTTPError(e):
   if e.response.status_code == 404:
