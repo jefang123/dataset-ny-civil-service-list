@@ -76,6 +76,17 @@ def get_all_datasets(query_params):
     data["domain"] = domain
   return data, 200
 
+def get_civil_dataset():
+  setup()
+  data = {}
+  domain = DOMAINS.get(_client.domain)
+  dataset = _client.get_metadata("vx8i-nprf")
+  dataset_id = dataset["id"] 
+  dataset_name = dataset["name"]
+  data[dataset_id] = dataset_name
+  data["domain"] = domain
+  return data, 200
+
 def get_dataset(dataset, query_params):
   sort_asc = query_params.get("sort_asc")
   sort_dsc = query_params.get("sort_desc")
