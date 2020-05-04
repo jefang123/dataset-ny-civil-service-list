@@ -137,3 +137,9 @@ def get_dataset_info(dataset):
   count = _client.get(dataset, select="COUNT(*) as total")
   response["total"] = _COUNT
   return response, 200
+
+def get_query(**kwargs):
+  limit = kwargs.get(limit, _COUNT)
+  offset = kwargs.get(offset, 0)
+  results = _client.get(_current_dataset, limit=limit, offset=offset)
+  return results, 200
