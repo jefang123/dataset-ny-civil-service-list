@@ -139,7 +139,50 @@ def get_dataset_info(dataset):
   return response, 200
 
 def get_query(**kwargs):
+  """
+  This endpoint gathers query params to form a query on the dataset
+  Possible params:
+    where clauses on columns : dict 
+      possible where comparison: > , < , = , like?, in?
+    limit : int
+    offset : int
+    column sort options : dict 
+  """
+  where = kwargs.get(where, None)
+  if where:
+    l_and = []
+    comparisons = where["and"].keys()
+    for comparison in comparisons:
+      clauses = where["and"][comparison]
+      for col, clause in clauses.items():
+        l_and.append(f"{col} {comparison} {clause}")
+    l_or = []
+    comparisons = where["or"].keys()
+    for comparison in comparisons:
+      clauses = where["or"][comparison]
+      for col, clause in clauses.items():
+        l_or.append(f"{col} {comparison} {clause}")
+    l_and = " and ".join(l_and)
+    l_or = " or ".join(l_or)
+    if l_and and l_or:
+      where = l_and + " or " + l_or
+    elif l_and:
+      where = l_and
+    elif l_or:
+      where = l_or
+  order = kwargs.get(order, None)
+  if order:
+    l = []
+    for col, sort in order.items:
+      l.append(f"{col} {sort}")
+    order = ",".join(l)
   limit = kwargs.get(limit, _COUNT)
   offset = kwargs.get(offset, 0)
-  results = _client.get(_current_dataset, limit=limit, offset=offset)
+  args = {
+    "where": where,
+    "limit": limit,
+    "offset": offset,
+    "order": order
+  }
+  results = _client.get(_current_dataset, **args)
   return results, 200
