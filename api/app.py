@@ -41,3 +41,7 @@ def hello():
 @app.route('/api/time', methods=["GET"])
 def get_current_time():
     return jsonify({'time': time.time()})
+
+if __name__ == '__main__':
+  # Threaded option to enable multiple instances
+  app.run(threaded=True, port=5000)
