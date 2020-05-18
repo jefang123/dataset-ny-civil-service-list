@@ -96,7 +96,8 @@ def get_dataset(dataset, query_params):
     sort += ",".join(sort_asc) + " ASC"
   if sort_dsc:
     sort += ",".join(sort_dsc) + " DSC"
-
+  if not sort:
+    sort = None
 
   msg, status_code = setup(dataset)
   if status_code != 200:
@@ -123,7 +124,7 @@ def get_dataset_info(dataset):
   try:
     info = _client.get_metadata(dataset)
   except exceptions.HTTPError as e:
-    return(handleHTTPError)
+    return (handleHTTPError(e))
   columns = info["columns"]
   response = {}
   response["dataset_name"] = info["name"]
