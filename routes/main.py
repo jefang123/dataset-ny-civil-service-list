@@ -22,7 +22,9 @@ def get_civil_dataset():
 @main.route('/api/<dataset>/', methods=["GET"])
 def get_dataset(dataset):
   query_params = request.args
-  res, status_code = basic_client.get_dataset(dataset, query_params)
+  offset = query_params.get("o", 0)
+  res, status_code = basic_client.get_dataset(dataset, offset)
+  # res, status_code = basic_client.get_dataset(dataset, query_params)
   if status_code == 200:
     return jsonify(res)
   elif status_code >= 400:

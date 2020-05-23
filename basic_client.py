@@ -117,7 +117,7 @@ def get_civil_dataset():
 #   # response["total"] = _COUNT
 #   return response, 200
 
-def get_dataset(dataset, offset=0):
+def get_dataset(dataset, offset):
   msg, status_code = setup(dataset)
   if status_code != 200:
     return (msg, status_code)
