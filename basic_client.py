@@ -87,23 +87,42 @@ def get_civil_dataset():
   data["domain"] = domain
   return data, 200
 
-def get_dataset(dataset, query_params):
-  sort_asc = query_params.get("sort_asc")
-  sort_dsc = query_params.get("sort_desc")
-  sort = ""
+# def get_dataset(dataset, query_params):
+#   sort_asc = query_params.get("sort_asc")
+#   sort_dsc = query_params.get("sort_desc")
+#   sort = ""
 
-  if sort_asc:
-    sort += ",".join(sort_asc) + " ASC"
-  if sort_dsc:
-    sort += ",".join(sort_dsc) + " DSC"
-  if not sort:
-    sort = None
+#   if sort_asc:
+#     sort += ",".join(sort_asc) + " ASC"
+#   if sort_dsc:
+#     sort += ",".join(sort_dsc) + " DSC"
+#   if not sort:
+#     sort = None
 
+#   msg, status_code = setup(dataset)
+#   if status_code != 200:
+#     return (msg, status_code)
+#   try:
+#     results = _client.get(dataset, limit=25, sort=sort)
+#   except exceptions.HTTPError as e:
+#     return handleHTTPError(e)
+#   response = {}
+#   for i, result in enumerate(results):
+#     for field, value in result.items():
+#       if _COLUMNS_TYPE[field] == "number":
+#         result[field] = int(float(value))
+#       elif _COLUMNS_TYPE[field] == "calendar_date":
+#         result[field] = datetime.fromisoformat(value).strftime("%m/%d/%y")
+#     response[i] = result
+#   # response["total"] = _COUNT
+#   return response, 200
+
+def get_dataset(dataset, offset=0):
   msg, status_code = setup(dataset)
   if status_code != 200:
     return (msg, status_code)
   try:
-    results = _client.get(dataset, limit=25, sort=sort)
+    results = _client.get(dataset, offset=offset, limit=25)
   except exceptions.HTTPError as e:
     return handleHTTPError(e)
   response = {}
@@ -114,7 +133,6 @@ def get_dataset(dataset, query_params):
       elif _COLUMNS_TYPE[field] == "calendar_date":
         result[field] = datetime.fromisoformat(value).strftime("%m/%d/%y")
     response[i] = result
-  # response["total"] = _COUNT
   return response, 200
 
 def get_dataset_info(dataset):
